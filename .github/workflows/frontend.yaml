@@ -1,4 +1,4 @@
-
+```yaml
 name: Frontend CI/CD
 
 on:
@@ -21,10 +21,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t saksham123njn/movieangular:latest ./frontend/movie-explorer
+        run: docker build -t saksham123njn/movieangular:${{ github.sha }} ./frontend/movie-explorer
 
       - name: Push Docker image
-        run: docker push saksham123njn/movieangular:latest
+        run: docker push saksham123njn/movieangular:${{ github.sha }}
 
       - name: Deploy to Kubernetes on EC2
         uses: appleboy/ssh-action@v1.2.2
@@ -33,6 +33,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo k3s kubectl set image deployment/frontend frontend=saksham123njn/movieangular:latest
+            sudo k3s kubectl set image deployment/frontend frontend=saksham123njn/movieangular:${{ github.sha }}
             sudo k3s kubectl rollout status deployment/frontend
-
+```
