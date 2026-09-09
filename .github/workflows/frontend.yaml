@@ -1,4 +1,4 @@
-```yaml
+
 name: Frontend CI/CD
 
 on:
@@ -35,4 +35,4 @@ jobs:
           script: |
             sudo k3s kubectl set image deployment/frontend frontend=saksham123njn/movieangular:${{ github.sha }}
             sudo k3s kubectl rollout status deployment/frontend
-```
+
