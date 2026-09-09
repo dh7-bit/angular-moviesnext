@@ -1,3 +1,4 @@
+```yaml
 name: Frontend CI/CD
 
 on:
@@ -24,3 +25,16 @@ jobs:
 
       - name: Push Docker image
         run: docker push saksham123njn/movieangular:latest
+
+      - name: Deploy to Kubernetes on EC2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo k3s kubectl set image deployment/frontend \
+              frontend=saksham123njn/movieangular:latest
+
+            sudo k3s kubectl rollout status deployment/frontend
+```
