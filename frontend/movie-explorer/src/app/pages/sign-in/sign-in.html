@@ -1,0 +1,224 @@
+<div class="min-h-screen bg-slate-950 flex items-center justify-center px-4 py-8">
+
+  <!-- Background glow -->
+
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-indigo-600/20 blur-3xl"></div>
+    <div class="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-purple-600/20 blur-3xl"></div>
+  </div>
+
+  <!-- Card -->
+
+  <div class="relative w-full max-w-md">
+
+```
+<div class="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl sm:p-10">
+
+  <!-- Logo -->
+  <div class="mb-8 text-center">
+
+    <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-600/30">
+      <svg
+        class="h-7 w-7 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+        />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-bold tracking-tight text-white">
+      Welcome back
+    </h1>
+
+    <p class="mt-2 text-sm text-slate-400">
+      Sign in to continue watching your favorite movies
+    </p>
+
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+    <!-- Email -->
+    <div>
+      <label
+        for="email"
+        class="mb-2 block text-sm font-medium text-slate-200"
+      >
+        Email address
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3.5 text-sm text-white placeholder-slate-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+        [class.border-red-500]="email.invalid && email.touched"
+      />
+
+      @if (email.invalid && email.touched) {
+
+        @if (email.errors?.['required']) {
+          <p class="mt-2 text-xs text-red-400">
+            Email address is required.
+          </p>
+        }
+
+        @if (email.errors?.['email']) {
+          <p class="mt-2 text-xs text-red-400">
+            Please enter a valid email address.
+          </p>
+        }
+
+      }
+    </div>
+
+    <!-- Password -->
+    <div>
+
+      <div class="mb-2 flex items-center justify-between">
+
+        <label
+          for="password"
+          class="block text-sm font-medium text-slate-200"
+        >
+          Password
+        </label>
+
+        <a
+          href="#"
+          class="text-xs font-medium text-indigo-400 transition hover:text-indigo-300"
+        >
+          Forgot password?
+        </a>
+
+      </div>
+
+      <div class="relative">
+
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3.5 pr-16 text-sm text-white placeholder-slate-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+          [class.border-red-500]="password.invalid && password.touched"
+        />
+
+        <button
+          type="button"
+          (click)="togglePassword()"
+          class="absolute right-3 top-1/2 -translate-y-1/2 px-2 text-xs font-semibold text-indigo-400 transition hover:text-indigo-300"
+        >
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+
+      </div>
+
+      @if (password.invalid && password.touched) {
+
+        @if (password.errors?.['required']) {
+          <p class="mt-2 text-xs text-red-400">
+            Password is required.
+          </p>
+        }
+
+        @if (password.errors?.['minlength']) {
+          <p class="mt-2 text-xs text-red-400">
+            Password must contain at least 8 characters.
+          </p>
+        }
+
+      }
+
+    </div>
+
+    <!-- Remember me -->
+    <div class="flex items-center">
+
+      <input
+        id="remember"
+        type="checkbox"
+        class="h-4 w-4 rounded border-white/20 bg-slate-900 text-indigo-600 focus:ring-indigo-500"
+      />
+
+      <label
+        for="remember"
+        class="ml-2 text-sm text-slate-400"
+      >
+        Remember me
+      </label>
+
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      [disabled]="signInForm.invalid"
+      class="w-full rounded-xl bg-indigo-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Sign In
+    </button>
+
+  </form>
+
+  <!-- Divider -->
+  <div class="my-7 flex items-center gap-4">
+
+    <div class="h-px flex-1 bg-white/10"></div>
+
+    <span class="text-xs text-slate-500">
+      OR
+    </span>
+
+    <div class="h-px flex-1 bg-white/10"></div>
+
+  </div>
+
+  <!-- Google button -->
+  <button
+    type="button"
+    class="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/4 px-4 py-3.5 text-sm font-medium text-white transition hover:bg-white/8"
+  >
+    <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-slate-900">
+      G
+    </span>
+
+    Continue with Google
+  </button>
+
+  <!-- Signup -->
+  <p class="mt-7 text-center text-sm text-slate-400">
+
+    Don't have an account?
+
+    <a
+      routerLink="/signup"
+      class="ml-1 font-semibold text-indigo-400 transition hover:text-indigo-300"
+    >
+      Create account
+    </a>
+
+  </p>
+
+</div>
+
+<!-- Bottom text -->
+<p class="mt-5 text-center text-xs text-slate-600">
+  © 2026 MovieHub. All rights reserved.
+</p>
+```
+
+  </div>
+
+</div>

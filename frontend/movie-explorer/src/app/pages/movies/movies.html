@@ -1,0 +1,97 @@
+<div class="min-h-screen bg-slate-950 text-white p-6">
+
+  <h1 class="text-2xl font-bold mb-4">TV Shows</h1>
+
+  <!-- Search + Sort -->
+  <div class="flex gap-3 mb-6">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (keyup.enter)="search()"
+      placeholder="Search shows..."
+      class="flex-1 rounded-lg bg-white/5 border border-white/10 px-4 py-2 text-sm outline-none"
+    />
+
+    <select
+      [(ngModel)]="sortBy"
+      (change)="changeSort()"
+      class="rounded-lg bg-slate-900 border border-white/10 px-3 py-2 text-sm"
+    >
+      <option value="rating">Rating</option>
+      <option value="year">Year</option>
+      <option value="title">Title</option>
+    </select>
+
+    <button
+      (click)="search()"
+      [disabled]="loading()"
+      class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold disabled:opacity-50"
+    >
+      Search
+    </button>
+  </div>
+
+  <!-- Error -->
+  @if (errorMessage()) {
+    <p class="text-red-400 mb-4">{{ errorMessage() }}</p>
+  }
+
+  <!-- Loading -->
+  @if (loading()) {
+    <p class="text-slate-400 mb-4">Loading...</p>
+  }
+
+  <!-- Empty -->
+  @if (!loading() && !errorMessage() && shows().length === 0) {
+    <p class="text-slate-500 mb-4">No shows found.</p>
+  }
+
+  <!-- Grid -->
+  @if (!loading() && shows().length > 0) {
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
+      @for (show of shows(); track trackByMovieId($index, show)) {
+        <div class="rounded-lg overflow-hidden bg-white/5 border border-white/10">
+          @if (show.image?.medium) {
+            <img [src]="show.image?.medium" [alt]="show.name" class="w-full aspect-2/3 object-cover" />
+          } @else {
+            <div class="w-full aspect-2/3 flex items-center justify-center bg-slate-800 text-3xl">🎬</div>
+          }
+
+          <div class="p-2">
+            <p class="text-sm font-medium truncate" [title]="show.name">{{ show.name }}</p>
+            <p class="text-xs text-slate-400">
+              @if (show.rating?.average) {
+                ★ {{ show.rating?.average | number:'1.1-1' }}
+              }
+              @if (show.premiered) {
+                · {{ show.premiered | slice:0:4 }}
+              }
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Pagination: simple prev/next, no page numbers needed -->
+  <div class="flex items-center justify-center gap-4">
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage() === 1 || loading()"
+      class="rounded-lg bg-white/5 border border-white/10 px-4 py-2 text-sm disabled:opacity-30"
+    >
+      ← Previous
+    </button>
+
+    <span class="text-sm text-slate-400">Page {{ currentPage() }}</span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="!hasNextPage() || loading()"
+      class="rounded-lg bg-white/5 border border-white/10 px-4 py-2 text-sm disabled:opacity-30"
+    >
+      Next →
+    </button>
+  </div>
+
+</div>
