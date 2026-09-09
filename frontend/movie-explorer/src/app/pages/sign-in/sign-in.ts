@@ -32,7 +32,7 @@ export class SignIn {
     password: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.minLength(8)
+        Validators.minLength(10)
       ]
     })
   });
