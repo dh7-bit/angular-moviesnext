@@ -21,7 +21,7 @@ interface Movie {
   templateUrl: './movies.html'
 })
 export class Movies implements OnInit {
-age=4500
+age=45000
   private readonly API_URL = 'https://api.tvmaze.com/shows';
 
   // Signals: state that the template reads. Updating these via .set()
