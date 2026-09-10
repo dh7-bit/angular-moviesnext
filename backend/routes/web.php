@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return 'Laravel is wokrsnsking!';
+    return 'Laraveddl is wokrsnsking!';
 });
