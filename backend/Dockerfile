@@ -13,17 +13,14 @@ RUN apt-get update && apt-get install -y \
 # Copy Composer binary from official image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# 1. Copy composer configuration files first
+# 1. Copy Composer configuration files first
 COPY composer.json composer.lock ./
 
-# 2. Copy the rest of your project files (including artisan!) BEFORE running composer install
+# 2. Copy the rest of the project
 COPY . .
 
-# 3. Now composer install can successfully run package discovery using artisan
+# 3. Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# 4. Clear and optimize caches
-RUN php artisan optimize:clear
 
 EXPOSE 8000
 
