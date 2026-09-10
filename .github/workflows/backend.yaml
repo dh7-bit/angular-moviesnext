@@ -23,7 +23,17 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build backend Docker image
-        run: docker build -t saksham123njn/moviebackend:latest ./backend
+        run: docker build -t saksham123njn/moviebackend:${{ github.sha }} ./backend
 
       - name: Push backend Docker image
-        run: docker push saksham123njn/moviebackend:latest
+        run: docker push saksham123njn/moviebackend:${{ github.sha }}
+
+      - name: Deploy to Kubernetes on EC2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo k3s kubectl set image deployment/backend-deployment backend=saksham123njn/moviebackend:${{ github.sha }}
+            sudo k3s kubectl rollout status deployment/backend-deployment
